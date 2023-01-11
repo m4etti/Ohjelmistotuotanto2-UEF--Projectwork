@@ -1,0 +1,31 @@
+{%extends "base.html" %}
+{%block title%}Jäsenet - Matkakertomus{%endblock%}
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <div class="col">
+        <!-- loopataan jäsenet listaan.-->
+        <br><br><br> <br>
+        <h2>Jäsenet</h2><br>
+            {%for matkaaja in matkaaja%}
+                <div class="row border border-primary rounded m-2 p-3">
+                    <div class="col-8 text-wrap text-break">
+                                               
+                            <h3>{{matkaaja.nimimerkki}}</h3>
+                            Etunimi: &nbsp;{{matkaaja.etunimi}}<br>
+                            Sukunimi: &nbsp;{{matkaaja.sukunimi}}<br>
+                            Paikkakunta: &nbsp;{{matkaaja.paikkakunta}}<br>
+                            Esittely: &nbsp;{{matkaaja.esittely}}
+                        
+                    </div>
+                    <div class="col-4">
+                        <img
+                        alt="image" width="150"
+                        src="{{ url_for('static',filename='/images/' + matkaaja.kuva) }}" 
+                        >
+                    </div>
+                </div>                      
+            {%endfor%}
+</div>
+{%endblock%}

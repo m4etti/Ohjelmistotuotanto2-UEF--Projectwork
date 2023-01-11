@@ -1,0 +1,11 @@
+{%extends "base.html" %}
+{%block title%}Matkakertomus{%endblock%}
+{% block content %}
+  <div class="bg-image" 
+    style="background-image: url('{{ url_for('static',filename='tausta.jpg') }}');
+        height: 100vh">
+        <div class="container text-center pt-5">
+          <h1 class="display-3"> <br> Tervetuloa Kuopion kulkijoitten Matkakertomus-sivulle</b></h1>
+        </div>
+  </div>
+{%endblock%}

@@ -1,0 +1,139 @@
+{% extends "base.html" %} 
+{% block title %}Omat Tiedot - Matkakertomus{% endblock %} {% block content %}
+<br>
+<br>  
+<div class="container"> 
+    <form method="POST" enctype="multipart/form-data">
+      <br><br><br> <br>  
+      <h2>Omat Tiedot</h2><br>
+      <div class="row">
+        <div class="col">
+            <!-- omat tiedot listana. Muokattaessa syöttkenttinä -->
+            <div class="form-group">
+                <label for="email">Sähköposti:</label>
+                {%if muokkaa%}
+                <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                value='{{matkaaja.email}}'
+                />
+                {%else%}
+                &nbsp; {{matkaaja.email}}
+                {%endif%}
+            </div>
+            <div class="form-group">
+                <label for="etunimi">Etunimi:</label>
+                {%if muokkaa%}
+                <input
+                type="text"
+                class="form-control"
+                id="etunimi"
+                name="etunimi" 
+                value='{{matkaaja.etunimi}}'         
+                />
+                {%else%}
+                &nbsp; {{matkaaja.etunimi}}
+                {%endif%}
+            </div>
+            <div class="form-group">
+                <label for="sukunimi">Sukunimi:</label>
+                {%if muokkaa%}
+                <input
+                type="text"
+                class="form-control"
+                id="sukunimi"
+                name="sukunimi"
+                value='{{matkaaja.sukunimi}}'
+                />
+                {%else%}
+                &nbsp; {{matkaaja.sukunimi}}
+                {%endif%}
+            </div>
+            <div class="form-group">
+                <label for="nimimerkki">Nimimerkki:</label>
+                {%if muokkaa%}
+                <input
+                type="text"
+                class="form-control"
+                id="nimimerkki"
+                name="nimimerkki"
+                value='{{matkaaja.nimimerkki}}'
+                required
+                />
+                {%else%}
+                &nbsp; {{matkaaja.nimimerkki}}
+                {%endif%}
+            </div>
+            <div class="form-group">
+                <label for="paikkakunta">Paikkakunta:</label>
+                {%if muokkaa%}
+                <input
+                type="text"
+                class="form-control"
+                id="paikkakunta"
+                name="paikkakunta"
+                value='{{matkaaja.paikkakunta}}'
+                />
+                {%else%}
+                &nbsp; {{matkaaja.paikkakunta}}
+                {%endif%}
+            </div>
+            <div class="form-group">
+                <label for="esittely">Esittely:</label>
+                {%if muokkaa%}
+                <input
+                type="text"
+                class="form-control"
+                id="esittely"
+                name="esittely"
+                value='{{matkaaja.esittely}}'
+                />
+                {%else%}
+                &nbsp; {{matkaaja.esittely}}
+                {%endif%}
+            </div>
+            {%if muokkaa%}
+            <div class="form-group">
+                <label for="salasana1">Salasana:</label>
+                <input
+                type="password"
+                class="form-control"
+                id="salasana1"
+                name="salasana1"
+                placeholder="Syötä uusi salasana jos haluat vaihtaa salasanan."
+                />
+            </div>
+            <div class="form-group">
+                <label for="salasana2">Salasana (varmista):</label>
+                <input
+                type="password"
+                class="form-control"
+                id="salasana2"
+                name="salasana2"
+                placeholder="Varmista salasana."
+                />
+            </div>
+            <div class="form-group">
+                <label for="myfile">Vaihda profiilikuva</label>
+                <input type="file" accept=".jpg,.png" id="uusikuva" name="uusikuva">   
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-primary">Tallenna</button>
+            {%else%}
+            <button  class="btn btn-secondary" name="nappi" value="muokkaa">Muokkaa</button>
+            {%endif%}
+            </form>
+        </div>
+        <div class="col">
+            <img
+            alt="image" height="300" 
+            src="{{ url_for('static',filename='/images/' + user.kuva) }}"
+            class="omattiedot-image"
+          />
+        </div>
+    </div>
+{% endblock %}
+    

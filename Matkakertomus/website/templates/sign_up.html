@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block title %}Rekisteröidy - Matkakertomus{% endblock %} {% block content %}
+  <div class="container"> 
+    <form method="POST">
+      <br>
+      <h3>Rekisteröidy</h3>
+      <div class="form-group">
+        <label for="email">Sähköposti</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="etunimi">Etunimi</label>
+        <input
+          type="text"
+          class="form-control"
+          id="etunimi"
+          name="etunimi"          
+        />
+      </div>
+      <div class="form-group">
+        <label for="sukunimi">Sukunimi</label>
+        <input
+          type="text"
+          class="form-control"
+          id="sukunimi"
+          name="sukunimi"
+        />
+      </div>
+      <div class="form-group">
+        <label for="nimimerkki">Nimimerkki</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nimimerkki"
+          name="nimimerkki"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="paikkakunta">Paikkakunta</label>
+        <input
+          type="text"
+          class="form-control"
+          id="paikkakunta"
+          name="paikkakunta"
+        />
+      </div>
+      <div class="form-group">
+        <label for="esittely">Esittely</label>
+        <input
+          type="text"
+          class="form-control"
+          id="esittely"
+          name="esittely"
+        />
+      </div>
+      <div class="form-group">
+        <label for="salasana1">Salasana</label>
+        <input
+          type="password"
+          class="form-control"
+          id="salasana1"
+          name="salasana1"
+        />
+      </div>
+      <div class="form-group">
+        <label for="salasana2">Salasana (varmista)</label>
+        <input
+          type="password"
+          class="form-control"
+          id="salasana2"
+          name="salasana2"
+        />
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Tallenna</button>
+    </form>
+  </div>
+{% endblock %}
+    

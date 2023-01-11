@@ -1,0 +1,64 @@
+{%extends "base.html" %}
+{%block title%}Porukan matkat - Matkakertomus{%endblock%}
+{% block stylesheet %}"{{ url_for('static',filename='porukanmatkat2.css') }}"{% endblock %}
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <div class="container">
+        <br><br><br> <br>  
+        <h2>Porukan matkat</h2><br><br>
+        <div class="row">
+            <div class="col-md">
+                <ul class="matkat-ul list" id="mylist">
+                <form method="POST">
+                    <!-- loopataan matkat listaan -->
+                    {%for matkat in matkat%}
+                    <li><button class="btn btn-text" id="item" name="matka" value= {{matkat.idmatka}}><a>{{matkat.matkaaja.nimimerkki}} -- {{matkat.alkupvm}} - {{matkat.loppupvm}}</a></button></li>
+                    {%endfor%}
+                </form>
+                </ul>
+            </div>
+            <div class="col-md">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col">
+                        </div>
+                        <div class="'col">
+                            <ul class="list-unstyled">
+                                {%if matka%}
+                                    <li class="list-item"><span>{{matka.alkupvm}} - {{matka.loppupvm}}</span></li>
+                                    <li class="list-item"><span>{{matka.matkaaja.nimimerkki}}</span></li>
+                                {%endif%}
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+            <div class="col">
+                <!-- loopataan valitun matkan tarinat listaan  -->
+                {%for tarina in tarinat%}
+                    <div class="row border border-primary rounded m-2 p-3">
+                        <div class="col-4 text-wrap text-break">
+                            <br>
+                                {{tarina.pvm}}<br>
+                                {{tarina.matkakohde.kohdenimi}}<br>
+                                {{tarina.teksti}}
+                        </div> 
+                        <div class="col-6">
+                            {%for kuva in tarina.kuva%}
+                                <img
+                                alt="image" width="200"
+                                src="{{ url_for('static',filename='/images/' + kuva.kuva) }}" 
+                                >
+                            {%endfor%}
+                        </div>                    
+                    </div>                    
+                {%endfor%}
+            </div>
+    </form>
+</div>
+{%endblock%}

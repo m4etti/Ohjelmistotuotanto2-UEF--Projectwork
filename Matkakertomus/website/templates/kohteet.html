@@ -1,0 +1,127 @@
+<!-- laajennetaan base.html -->
+{%extends "base.html" %}
+{%block title%}Kohteet - Matkakertomus{%endblock%}
+{% block stylesheet %}"{{ url_for('static',filename='matkakohde2.css') }}"{% endblock %}
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <div class="container">
+        <br><br><br> <br>  
+        <h2>Matkakohteet</h2><br><br>
+        <div class="row">
+            <div class="col-md">
+                <ul class="matkakohde-ul list" id="mylist">
+                <!-- loopataan kohteet listaan. lista itemit nappeja jotta niitten painallus tekee POST kutsun -->
+                <form method="POST">
+                    {%for kohteet in kohteet%}
+                    <li><button class="btn btn-text" id="item" name="kohde" value= {{kohteet.idmatkakohde}}><a>{{kohteet.kohdenimi}}</a></button></li>
+                    {%endfor%}
+                </form>
+                </ul>
+            </div>
+            <div class="col-md">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col ">
+                            {%if kohde and not lisaa%}
+                            <img
+                                alt="image" width="300"
+                                src="{{ url_for('static',filename='/images/' + kohde.kuva) }}" 
+                                class="matkakohde1-image"
+                            />
+                            {%endif%}
+                        </div>
+                        <div class="'col text-wrap text-break">
+                            <ul class="list-unstyled">
+                            <!-- jos on painettu lisää tai päivitä tekstit muuttuu syöttö kentiksi 
+                                    jos päivitys kentissä  valmiina niissä sillähetkellä oleva sisältö
+                                    ja kohteen nimi lukittu-->
+                            {%if lisaa or paivita%}
+                                <li>
+                                <input
+                                type="text"
+                                class="form-control"
+                                id="matkakohde"
+                                name="matkakohde"
+                                placeholder="Matkakohteen nimi"
+                                required
+                                {% if paivita %}
+                                value="{{kohde.kohdenimi}}"
+                                readonly
+                                {%endif%}
+                                />
+                                </li> 
+                                <li>
+                                <input
+                                type="text"
+                                class="form-control"
+                                id="maa"
+                                name="maa"
+                                placeholder="Matkakohteen maa"
+                                {% if paivita %}
+                                value="{{kohde.maa}}"
+                                {%endif%}
+                                />
+                                </li>
+                                <li>
+                                <input
+                                type="text"
+                                class="form-control"
+                                id="paikkakunta"
+                                name="paikkakunta"
+                                placeholder="Matkakohteen paikkakunta"
+                                {% if paivita %}
+                                value="{{kohde.paikkakunta}}"
+                                {%endif%}
+                                />
+                                </li>
+                                <!-- jos ei ole painettu niin sitten vaan tekstiä -->
+                            {%else%}            
+                                <li class="list-item"><span>{{ kohde.kohdenimi }}</span></li>
+                                <li class="list-item"><span>{{kohde.maa}}</span></li>
+                                <li class="list-item"><span>{{kohde.paikkakunta}}</span></li>            
+                            {%endif%}
+                            </ul>
+                                <!-- kuvatekstille vstaava ehto -->
+                                {%if lisaa or paivita%}
+                                <input
+                                type="text"
+                                class="form-control"
+                                id="kuvateksti"
+                                name="kuvateksti"
+                                placeholder="Kohteen kuvaus"
+                                {% if paivita %}
+                                value="{{kohde.kuvateksti}}"
+                                {%endif%}
+                                />
+                                {%else%}
+                                {{kohde.kuvateksti}}
+                                {%endif%}
+                            <!-- kuvan lisäys kohta (file upload) -->
+                            {%if lisaa or paivita%}
+                            <br />
+                            <label for="myfile">Liisää kuva</label>
+                            <input type="file" accept=".jpg,.png" id="uusikuva" name="uusikuva">
+                            <br />
+                            <!-- tallenna nappi näkyy vain muokkatessa/luodessa -->
+                            <button type="submit" class="btn btn-primary" name="nappi" value="tallenna">Tallenna</button>
+                            {%endif%}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- lisää muokkaa poista napit -->
+    <form method="POST">
+        {%if user.is_authenticated%}
+        <button class="btn btn-secondary" name="nappi" value="lisaa">Lisää kohde</button> 
+            {%if kohde%}
+                <button class="btn btn-secondary" name="nappi" value="paivita">Päivitä kohdetta</button>
+                <button class="btn btn-secondary" name="nappi" value="poista">Poista kohde</button>
+            {%endif%}
+        {%endif%}
+    </form>
+</div>
+{%endblock%}

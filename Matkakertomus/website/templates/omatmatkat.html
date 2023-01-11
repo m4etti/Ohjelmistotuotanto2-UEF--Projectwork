@@ -1,0 +1,210 @@
+<!-- laajennetaan base.html -->
+{%extends "base.html" %}
+{%block title%}Omat matkat - Matkakertomus{%endblock%}
+{% block stylesheet %}"{{ url_for('static',filename='omatmatkat2.css') }}"{% endblock %}
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <div class="container">
+        <br><br><br> <br>  
+        <h2>Omat matkat</h2><br><br>
+        <div class="row">
+            <div class="col-md">
+                <ul class="matkat-ul list" id="mylist">
+                <!-- loopataan matkat listaan. lista itemit nappeja jotta niitten painallus tekee POST kutsun -->
+                <form method="POST">
+                    {%for matkat in matkat%}
+                    <li><button class="btn btn-text" id="item" name="matka" value= {{matkat.idmatka}}><a>{{matkat.alkupvm}} - {{matkat.loppupvm}}</a></button></li>
+                    {%endfor%}
+                </form>
+                </ul>
+            </div>
+            <div class="col-md">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col">
+                        </div>
+                        <div class="'col">
+                            <ul class="list-unstyled">
+                            <!-- jos on painettu lisää tai päivitä tekstit muuttuu syöttö kentiksi -->
+                            {%if lisaa_matka or paivita_matka%}
+                                <li>
+                                <label>Alku päivämäärä:</label>
+                                <input
+                                type="date"
+                                class="form-control"
+                                id="alkupvm"
+                                name="alkupvm"
+                                required
+                                {% if paivita_matka %}
+                                value="{{matka.alkupvm}}"
+                                {%endif%}
+                                />
+                                </li> 
+                                <li>
+                                <label>Loppu päivämäärä:</label>
+                                <input
+                                type="date"
+                                class="form-control"
+                                id="loppupvm"
+                                name="loppupvm"
+                                {% if paivita_matka %}
+                                value="{{matka.loppupvm}}"
+                                {%endif%}
+                                />
+                                </li>
+                                <li>
+                                <label>Yksityinen:</label>
+                                <input
+                                type="checkbox"
+                                class="form-control"
+                                id="yksityinen"
+                                name="yksityinen"
+                                {% if paivita_matka %}
+                                value="{{matka.yksityinen}}"
+                                {%endif%}
+                                />
+                                </li>
+                                {%if lisaa_matka%}
+                                    <button type="submit" class="btn btn-primary" name="nappi" value="tallenna_matka">Tallenna</button>
+                                {%else%}
+                                    <button type="submit" class="btn btn-primary" name="nappi" value="tallenna_matka_paivita">Tallenna</button>
+                                {%endif%}
+                                <!-- jos ei ole painettu niin sitten vaan tekstiä -->
+                            {%elif matka%}            
+                                <li class="list-item"><span>{{matka.alkupvm}} - {{matka.loppupvm}}</span></li>
+                                <li class="list-item"><span>{{matka.matkaaja.nimimerkki}}</span></li>
+                                {%if matka.yksityinen == True%}
+                                    <li class="list-item"><span>Yksityinen</span></li> 
+                                {%elif matka.yksityinen == False%}
+                                    <li class="list-item"><span>Julkinen</span></li>
+                                {%endif%}            
+                            {%endif%}
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- lisää muokkaa poista napit -->
+    <form method="POST" enctype="multipart/form-data">
+        <button class="btn btn-secondary" name="nappi" value="lisaa_matka">Lisää matka</button> 
+        {%if matka%}
+            <button class="btn btn-secondary" name="nappi" value="paivita_matka">Päivitä matkaa</button>
+            <button class="btn btn-secondary" name="nappi" value="poista_matka">Poista matka</button>
+            <button class="btn btn-secondary" name="nappi" value="lisaa_tarina">Lisää tarina</button>
+        {%endif%}
+        <br>
+        <!-- tarinan lisäys -->
+        {%if lisaa_tarina%}
+            Päivämäärä
+            <input
+            type="date"
+            class="form-control"
+            id="pvm"
+            name="pvm"
+            required
+            />
+            Matkakohde
+            <select
+            class="form-control"
+            id="matkakohde"
+            name="matkakohde"
+            required
+            >
+            {%for kohde in kohteet%}
+                <option value="{{kohde.kohdenimi}}">{{kohde.kohdenimi}}</option>
+            {%endfor%}
+            </select>
+            Tarina
+            <input
+                type="textarea"
+                class="form-control"
+                id="teksti"
+                name="teksti"
+                required
+            />
+            <br />
+            <label for="myfile">Liisää kuva</label>
+            <input type="file" accept=".jpg,.png" id="uusikuva" name="uusikuva">
+            <br />
+            <button type="submit" class="btn btn-primary" name="nappi" value="tallenna_tarina">Tallenna</button>    
+        {%endif%}
+            <div class="col">
+                <!-- loopataan kaikki tarinat näkyviin -->
+                {%for tarina in tarinat%}
+                    <div class="row border border-primary rounded m-2 p-3">
+                        <div class="col-4 text-wrap text-break">
+                            <br>
+                            <!-- päivittäessä syöttökentät -->
+                            {%if paivita_tarina == tarina.idtarina%}
+                                <input
+                                type="date"
+                                class="form-control"
+                                id="pvm"
+                                name="pvm"
+                                required
+                                value="{{tarina.pvm}}"
+                                />
+                                <select
+                                class="form-control"
+                                id="matkakohde"
+                                name="matkakohde"
+                                required
+                                value="{{tarina.pvm}}"
+                                >
+                                {%for kohde in kohteet%}
+                                    <option value="{{kohde.kohdenimi}}">{{kohde.kohdenimi}}</option>
+                                {%endfor%}
+                                </select>
+                                <input
+                                    type="textarea"
+                                    class="form-control"
+                                    id="teksti"
+                                    name="teksti"
+                                    required
+                                    value="{{tarina.teksti}}"
+                                />
+                                <br />
+                                <label for="myfile">Liisää kuva</label>
+                                <input type="file" accept=".jpg,.png" id="uusikuva" name="uusikuva">
+                                <br />
+                                <button type="submit" class="btn btn-primary" name="nappi" value="tallenna_tarina_paivita{{tarina.idtarina}}">Tallenna</button>
+                            <!-- muulloin vain takstit -->
+                            {%else%}
+                                {{tarina.pvm}}<br>
+                                {{tarina.matkakohde.kohdenimi}}<br>
+                                {{tarina.teksti}}
+                            {%endif%} 
+                        </div>
+                        <!-- tarinan kuvat ja poisto ruksit muokkattaessa  -->
+                        <div class="col-6">
+                            {%for kuva in tarina.kuva%}
+                                <img
+                                alt="image" width="200"
+                                src="{{ url_for('static',filename='/images/' + kuva.kuva) }}" 
+                                >
+                                {%if paivita_tarina == tarina.idtarina%}
+                                <label for="poista">Poista:</label>
+                                <input
+                                type="checkbox"
+                                class="form-control"
+                                id="poista_kuva"
+                                name="poista_kuva{{kuva.idkuva}}"
+                                />
+                                {%endif%}
+                            {%endfor%}
+                        </div>
+                        <!-- tarinan muokkaus napit -->
+                        <div class="col-2">
+                            <button class="btn btn-secondary m-1" name="nappi" value="poista_tarina {{tarina.idtarina}}">Poista tarina</button>
+                            <button class="btn btn-secondary m-1" name="nappi" value="paivita_tarina {{tarina.idtarina}}">päivitä tarina</button>
+                        </div>                                      
+                    </div>                    
+                {%endfor%}
+            </div>
+    </form>
+</div>
+{%endblock%}
